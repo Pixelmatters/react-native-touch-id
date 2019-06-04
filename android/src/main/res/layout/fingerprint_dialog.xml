@@ -37,21 +37,16 @@
             android:layout_height="56dp"
             android:layout_gravity="center"
             android:layout_marginStart="5sp"
+            android:layout_marginLeft="5sp"
             >
 
             <ImageView
-                android:id="@+id/fingerprint_background"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/rounded_shape"/>
-
-            <ImageView
-                android:id="@+id/fingerprint_icon"
-                android:layout_width="36dp"
+                android:id="@+id/alert_icon"
+                android:layout_width="56dp"
                 android:layout_gravity="center"
-                android:layout_height="36dp"
+                android:layout_height="56dp"
                 android:textColor="#fff"
-                android:src="@drawable/ic_fp_40px"/>
+                android:src="@drawable/fingerprint_icon"/>
         </FrameLayout>
 
         <TextView
@@ -59,9 +54,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
             android:layout_gravity="center_vertical"
             android:text="Touch sensor"
-            android:textColor="#696969"
+            android:textColor="#59000000"
             android:textSize="18sp" />
     </LinearLayout>
 

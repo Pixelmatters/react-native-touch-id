@@ -18,7 +18,6 @@ import com.facebook.react.bridge.ReadableMap;
 import android.hardware.fingerprint.FingerprintManager;
 
 
-
 public class FingerprintDialog extends DialogFragment implements FingerprintHandler.Callback {
 
     private FingerprintManager.CryptoObject mCryptoObject;
@@ -26,22 +25,17 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
     private FingerprintHandler mFingerprintHandler;
     private boolean isAuthInProgress;
 
-    private ImageView mFingerprintBackground;
     private ImageView mFingerprintImage;
     private TextView mFingerprintSensorDescription;
-    //private TextView mFingerprintError;
     private Button mCancelButton;
     private Button mUsePassword;
 
     private String authReason;
     private int imageColor = 0;
-    private int imageErrorColor = 0;
     private String dialogTitle = "";
     private String cancelText = "";
     private String usePassword = "";
     private String sensorDescription = "";
-    private String sensorErrorDescription = "";
-    private String errorText = "";
 
     @Override
     public void onAttach(Context context) {
@@ -64,22 +58,14 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
         final TextView mFingerprintDescription =  view.findViewById(R.id.fingerprint_description);
         mFingerprintDescription.setText(this.authReason);
 
-        this.mFingerprintImage = view.findViewById(R.id.fingerprint_icon);
-        this.mFingerprintBackground = view.findViewById(R.id.fingerprint_background);
+        this.mFingerprintImage = view.findViewById(R.id.alert_icon);
         this.mFingerprintSensorDescription = view.findViewById(R.id.fingerprint_sensor_description);
-        //this.mFingerprintError = view.findViewById(R.id.fingerprint_error);
         this.mCancelButton = view.findViewById(R.id.cancel_button);
         this.mUsePassword = view.findViewById(R.id.use_password);
 
 
-        this.mFingerprintImage.setImageResource(R.drawable.ic_fp_40px);
-        this.mFingerprintBackground.setImageResource(R.drawable.rounded_shape);
+        this.mFingerprintImage.setImageResource(R.drawable.fingerprint_icon);
         this.mFingerprintSensorDescription.setText(this.sensorDescription);
-        //this.mFingerprintError.setText(this.errorText);
-
-        if (this.imageColor != 0) {
-            this.mFingerprintImage.setColorFilter(this.imageColor);
-        }
 
         mCancelButton.setText(this.cancelText);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -167,17 +153,10 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
             this.sensorDescription = config.getString("sensorDescription");
         }
 
-        if (config.hasKey("sensorErrorDescription")) {
-            this.sensorErrorDescription = config.getString("sensorErrorDescription");
-        }
-
         if (config.hasKey("imageColor")) {
             this.imageColor = config.getInt("imageColor");
         }
 
-        if (config.hasKey("imageErrorColor")) {
-            this.imageErrorColor = config.getInt("imageErrorColor");
-        }
     }
 
     public interface DialogResultListener {
@@ -200,8 +179,7 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
         this.setUserResponse(
                 "Fingerprint recognized",
                 "#009688",
-                R.drawable.round_done_white,
-                R.drawable.rounded_shape_success);
+                R.drawable.fingerprint_success);
 
         Handler handler = new Handler();
         Runnable r = new Runnable() {
@@ -220,8 +198,7 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
         this.setUserResponse(
                 errorString,
                 "#f4511e",
-                R.drawable.round_error_white,
-                R.drawable.rounded_shape_error);
+                R.drawable.fingerprint_fail);
 
         ObjectAnimator
                 .ofFloat(this.mFingerprintSensorDescription, "translationX", 0, 8, -8, 8, -8, 8, -8, 8, -8, 0)
@@ -237,10 +214,9 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
         dismiss();
     }
 
-    private void setUserResponse(String message, String textColor, int fingerprintImageId, int fingerprintbackgroundId){
+    private void setUserResponse(String message, String textColor, int fingerprintImageId){
         this.mFingerprintSensorDescription.setText(message);
         this.mFingerprintSensorDescription.setTextColor(Color.parseColor(textColor));
         this.mFingerprintImage.setImageResource(fingerprintImageId);
-        this.mFingerprintBackground.setImageResource(fingerprintbackgroundId);
     }
 }
